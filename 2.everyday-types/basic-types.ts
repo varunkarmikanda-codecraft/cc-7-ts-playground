@@ -29,19 +29,19 @@ function addP(a: number, b: number): number {
 
 // `any` type basically downgrades the type checking and takes us back to js
 // ! using `any` is therefore discouraged.
-function addDownGraded(a: any, b: any): any {
+function addDownGraded(a: string, b: string): string {
   return a.split(b); // ! we can do whatever we want here!
 }
 
 // * Exercise 1:
 // Fix the error, and ensure it returns value of proper type
-function subtract(a, b) {
-  return;
+function subtract(a: number, b: number): number {
+  return a - b;
 }
 
 // * Exercise 2:
 export let example11: string = 'Hello World!';
-export let example22: string = 42;
-export let example33: string = true;
-export let example44: string = Symbol();
-export let example55: string = 123n;
+export let example22: number = 42;
+export let example33: boolean = true;
+export let example44: symbol = Symbol();
+export let example55: bigint = 123n;

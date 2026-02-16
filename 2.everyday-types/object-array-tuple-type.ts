@@ -36,8 +36,9 @@ const aCat: {
   livesInLand: boolean;
   isPredator: boolean;
   estimatedCount: number;
-} = { name: 'Tom', livesInLand: true };
+} = { name: 'Tom', livesInLand: true, isPredator: true, estimatedCount: 1_000_000 };
 displayToConsole(aCat); //! Exercise: Fix the error - few fields are missing.
+// * Done
 
 // * Typescript follows structured typing.
 const aDog = {
@@ -50,19 +51,16 @@ const aDog = {
 displayToConsole(aDog); // * TypeScript ignores additional fields. It has everything that the function is expecting and much more. All the extra fields are ignored.
 
 // * optional properties.
-function logAnimal(animal: {
-  name: string;
-  livesInLand: boolean;
-  isPredator: boolean;
-  estimatedCount: number;
-  isDomesticated?: boolean; // ? Exercise: What type you see when you hover?
-}) {
+function logAnimal(animal: Animal) {
   displayToConsole(animal);
   if (animal.isDomesticated) {
     //* optinal param check, if it is absent, value will be undefined.
     console.log('Domesticated!');
   }
 }
+
+logAnimal(aDog);
+logAnimal(lion);
 
 // * We can observe that, we are simply duplicating the structured type in many places
 // * We can avoid this by introducing a type. Thanks to typescript's type alias expressions.
@@ -78,14 +76,16 @@ type Animal = {
 // ! Exercise. Can you identify the common type
 // ! among the following functions and create a type
 // ! and use it?
-const getRectangleArea = (rectangle: { width: number; height: number }) => {
+type Rectangle = { 
+  width: number; 
+  height: number 
+};
+
+const getRectangleArea = (rectangle: Rectangle) => {
   return rectangle.width * rectangle.height;
 };
 
-const getRectanglePerimeter = (rectangle: {
-  width: number;
-  height: number;
-}) => {
+const getRectanglePerimeter = (rectangle: Rectangle) => {
   return 2 * (rectangle.width + rectangle.height);
 };
 
@@ -96,6 +96,13 @@ const getRectanglePerimeter = (rectangle: {
 // * You can also describe the types of arrays in TypeScript. There are two different syntaxes for doing this.
 
 // * The first option is the square bracket syntax. This syntax is similar to the type annotations we've made so far, but with the addition of two square brackets at the end to indicate an array.
+
+let alb = [
+  'Rubber Soul',
+  'Revolver',
+  "Sgt. Pepper's Lonely Hearts Club Band",
+  63,
+];
 
 let albums: string[] = [
   'Rubber Soul',
@@ -118,14 +125,14 @@ let albums1: Array<string> = [
 type Album = {
   artist: string;
   title: string;
-  year: number;
+  year?: number;
 };
 
 let selectedDiscography: Album[] = [
   {
     artist: 'The Beatles',
     title: 'Rubber Soul',
-    year: 1965,
+    // year: 1965,
   },
   {
     artist: 'The Beatles',
@@ -143,6 +150,8 @@ selectedDiscography.push({ name: 'Karma', type: 'cat' });
 
 let album1: [string, number] = ['Rubber Soul', 1965];
 album1[1] = 'Hi'; // ! error
+
+// ? React useState() uses the tuple under the hood
 
 // * Tuples are useful for grouping related information together without having to create a new type.
 let albumWithPlayCount: [Album, number] = [
@@ -170,6 +179,7 @@ const [album, playCount]: NamedTuple = [
 // ! Exercise
 type ShoppingCart = {
   userId: string;
+  items: string[];
 };
 
 const processCart = (cart: ShoppingCart) => {
@@ -182,9 +192,15 @@ processCart({
 });
 
 // !Exercise
+type Ingredient = {
+  name: string;
+  quantity: string
+}
+
 type Recipe = {
   title: string;
   instructions: string;
+  ingredients?: Ingredient[];
 };
 
 const processRecipe = (recipe: Recipe) => {
@@ -210,7 +226,8 @@ processRecipe({
 
 //! fixme, ensure someone can pass only two numbers
 //! as a tuple
-const setRange = (range: Array<number>) => {
+// const setRange = (range: Array<number>) => {
+const setRange = (range: [number, number]) => {
   const x = range[0];
   const y = range[1];
 
@@ -218,11 +235,21 @@ const setRange = (range: Array<number>) => {
   // x and y should both be numbers!
 };
 
+// Gives error when no error lol!
+
+setRange([1, 2]);
+setRange([1, 2, 3]);
+
+//@ts-expect-error calling setRange must be flagged as error, as only two items can be passed
+setRange([1, 2]); //
+
 //@ts-expect-error calling setRange must be flagged as error, as only two items can be passed
 setRange([1, 2, 3]); //
 
 //! Fixme
-const goToLocation = (coordinates: Array<number>) => {
+// const goToLocation = (coordinates: Array<number>) => {
+  // const goToLocation = (coordinates: [number, number, number | undefined]) => {
+  const goToLocation = (coordinates: [number, number, number?]) => {
   const latitude = coordinates[0];
   const longitude = coordinates[1];
   const elevation = coordinates[2];
@@ -232,6 +259,8 @@ const goToLocation = (coordinates: Array<number>) => {
     console.log(elevation);
   }
 };
+goToLocation([2, 3, 3.9]);
+goToLocation([2, 3, 3.9, 3]);
 
 //@ts-expect-error one should be able to pass tuple
 // with lat, long, and optional elevation
