@@ -94,4 +94,73 @@ type FuncReturningFuncReturningFuncStringNum = () => () => (
   s: string,
 ) => number;
 
-// ! exercise. You are suppose to design a binary search function, for an array of sorted student objects sorted by their seirial number.  Come up with minimum type needed to define a student. Binary search requires a comparison. Students are objects so, they use pass by reference semantics. Obviously we need to pass a compare function to binary search so that two students can be compared using their serial number. Essentially binary search function should take the array of students, the student to search for, and then a compare function that can compare two students and can return 0 if equal, 1 if first is greater than second, -1 otherwise
+// ! exercise. You are suppose to design a binary search function, for an array of sorted student objects sorted by their seirial number.  
+// ! Come up with minimum type needed to define a student. Binary search requires a comparison. Students are objects so, they use pass by reference semantics. 
+// ! Obviously we need to pass a compare function to binary search so that two students can be compared using their serial number. 
+// ! Essentially binary search function should take the array of students, the student to search for, and then a compare function that can compare two students and can return 0 if equal, 1 if first is greater than second, -1 otherwise
+
+// ? Binary search function 
+// ? Student type
+// ? Array of students
+// ? Custom student so a pass by reference
+// ? Compare 2 students
+
+// type Student = {
+//   id: number;
+//   name: string;
+//   age: number;
+// }
+
+// let allStudents: Student[];
+
+// type BinarySearch = (student: Student[], searchID: number, CompareFunction) => 
+
+// type CompareFunction = (studentID: number, searchID: number) => 
+
+// const BinarySearch = (student: Student[], searchID: number, CompareFunction) => {
+//   const numberOfStudents = student.length;
+//   let left = 0, right = numberOfStudents;
+//   let mid = (left + right) / 2;
+//   while(right >= left){
+//     const comparisionResult = CompareFunction(student[0].id, searchID);
+//     if(comparisionResult === 0) {
+//       return student[mid];
+//     } else if(comparisionResult === 1) {
+      
+//     }
+//   }
+// };
+
+// const CompareFunction = (studentID: number, searchID: number) => {
+//   if(studentID === searchID) return 0;
+//   else if(studentID > searchID) return 1;
+//   else return -1;
+// };
+
+// const student1: Student = {
+//   id: 1,
+//   name: "Varun",
+//   age: 21
+// }
+
+// const student2: Student = {
+//   id: 2,
+//   name: "Arun",
+//   age: 23
+// }
+
+// const student3: Student = {
+//   id: 3,
+//   name: "Ajay",
+//   age: 23
+// }
+
+// allStudents = [student1, student1, student3]
+
+type Student = {
+  serialNumber: number
+}
+
+type CompareFunc = (Student1: Student, student2: Student) => 0 | 1 | -1;
+
+type BinarySearch = (students: Student[], searchStudent: Student, Compare: CompareFunc) => boolean;
