@@ -34,11 +34,16 @@ type AlbumSalesGenre = Album & SalesData & { genre: string };
 //* Intersection types can be created even combining primitive types, but turns out to be impossible.
 type StringAndNumber = string & number; //! never is a special type of typescript that indicates, this can never work. The reason is string and number have some properties which cant be combined together.
 
+function foo(): never{
+  throw new Error('');
+}
+
 //* Incompatible types can not be combined
-type One = { id: number };
-type Two = { id: string };
+type One = { id: number, x: string };
+type Two = { id: string, y: string };
 type Combined = One & Two;
-let combined: Combined = { id: 10 }; //! id can not be a number as well as string at same time! Type 'number' is not assignable to type 'never'.
+let combined: Combined = { id: 10, x: "x", y:"y"}; //! id can not be a number as well as string at same time! Type 'number' is not assignable to type 'never'.
+let combined2: Combined = { x: "x", y:"y"};
 
 // * Intersections vs interface extends
 
@@ -63,18 +68,28 @@ interface TwoI extends OneI {
 
 //! Exercise:
 // Here we have a User type and a Product type, both with some common properties like id and createdAt:
-type User = {
-  id: string;
-  createdAt: Date;
-  name: string;
-  email: string;
-};
+// type User = {
+//   id: string;
+//   createdAt: Date;
+//   name: string;
+//   email: string;
+// };
 
-type Product = {
-  id: string;
-  createdAt: Date;
-  name: string;
-  price: number;
-};
+// type Product = {
+//   id: string;
+//   createdAt: Date;
+//   name: string;
+//   price: number;
+// };
 // Your task is to create a new BaseEntity type that includes the id and createdAt properties. Then, use the & operator to create User and Product types that intersect with BaseEntity.
 //!-------------
+
+type BaseEntity = {
+  id: string,
+  createdAt: Date,
+  name: string,
+}
+
+type User = BaseEntity & {email: string};
+
+type Product = BaseEntity & {price: number};

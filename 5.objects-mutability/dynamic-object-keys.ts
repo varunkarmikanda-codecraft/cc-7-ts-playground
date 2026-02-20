@@ -10,9 +10,9 @@ interface WordFrequency {
   //? but how do we type keys which are words in a sentence given? we do not know them in advance!
 }
 
-// To address this, TS has a thing called indexed signature. So we can now accomodate the dynamic keys in WordFrequency:
+// To address this, TS has a thing called index signature. So we can now accomodate the dynamic keys in WordFrequency:
 interface WordFrequency {
-  [index: string]: number;
+  [index: string]: number;    // string, number, Symbol, boolean
 }
 // This signature says, you can have any number of string keys as you wish. Key sentence, however is a must.
 
@@ -45,6 +45,12 @@ const albumAwards1: Record<'Grammy' | 'MercuryPrize' | 'Billboard', boolean> = {
   MercuryPrize: false,
   Billboard: true,
 };
+
+interface albumI {
+  Grammy: true,
+  MercuryPrize: false,
+  Billboard: true,
+}
 
 const albumAwards2: {
   [index: 'Grammy' | 'MercuryPrize' | 'Billboard']: boolean;
@@ -109,14 +115,30 @@ acceptAllNonPrimitives(true);
 
 // ! Exercise - 1 Use an Index Signature for Dynamic Keys: Invent a type Scores, that can have any string as key.
 // Give solution using inline structural type, type alias, interface, and Record.
-const scores = {};
+type ScoreI = {[key: string]: number};
 
-scores.math = 95;
-scores.english = 90;
-scores.science = 85;
+const scoreI: ScoreI = {
+  "math": 95,
+  "english": 90,
+  "science": 85,
+  "kannada": 90
+}
+
+type ScoreX = Record<string, number>;
+
+const scoreX: ScoreX = {
+  "math": 100,
+  "english": 100,
+}
+
+//  const scores = {};
+
+// scores.math = 95;
+// scores.english = 90;
+// scores.science = 85;
 
 // ! Exercise  -2 Default Properties with Dynamic Keys: tweak the Scores type to include 3 known fields - maths, science, english. And then we should be able to add many more.
-const scores: Scores = {
+const scores: ScoreI = {
   maths: 95,
   english: 90,
   science: 30,
@@ -125,3 +147,39 @@ const scores: Scores = {
 scores.athletics = 100;
 scores.french = 75;
 scores.spanish = 70;
+
+type ScoreY = {
+  science: number
+  english: number
+  [key: string]: number
+}
+
+const scoreY: ScoreY = {
+  "science": 90,
+  "english": 99,
+  "kannada": 87
+}
+
+interface ScoreXX {
+  [key: string]: number
+}
+
+const scoreXX = {
+  "english": 70,
+  "kannada": 90
+}
+
+interface DefaultSubject{
+  science: number,
+  arts: number
+}
+
+interface ScoreYY extends DefaultSubject{
+  [key: string]: number
+}
+
+const scoreYY: ScoreYY = {
+  "science": 99,
+  "english": 88,
+  "arts": 98
+}
