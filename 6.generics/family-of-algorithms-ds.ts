@@ -17,8 +17,14 @@ const firstItem = <T>(array: T[]) => {
   return array[0];
 };
 
-const fNum = <number>firstItem([1, 2, 3]);
-const fStr = <string>firstItem(['1', '2', '3']);
+const fNum = firstItem<number>([1, 2, 3]);
+const fStr = firstItem<string>(['1', '2', '3']);
+
+function test<T>(array: T[]){
+  return array[0];
+};
+const fnNum = firstItem<number>([1,2,3]);
+const fnnNum = firstItem([1,2,3]);
 
 interface Planet {
   name: string;
@@ -30,7 +36,7 @@ const planets: Planet[] = [
   { name: 'Mercury', daySpan: 12, distanceFromSun: 444000000 },
 ];
 
-const firstPlanet = <Planet>firstItem(planets); // Try removing the  <Planet>. Observe that it still works!.
+const firstPlanet = firstItem<Planet>(planets); // Try removing the  <Planet>. Observe that it still works!.
 // We need not supply type in case TS can infer it correctly.
 
 // We can also create types which are generic.
@@ -40,6 +46,9 @@ const firstPlanet = <Planet>firstItem(planets); // Try removing the  <Planet>. O
 type Transform<T, U> = (t: T) => U;
 
 // ! Exercise give the type for firstItem.
+type firstItemFn<T> = (array: T[]) => T | undefined;
+
+const aFirstItem: firstItemFn<number> = (array: number[]) =>{ return 0};
 
 // * we can have an interface with generics support. For example, we want a linked list implementation. Here list node can be represented as
 interface ListNode<T> {
@@ -48,12 +57,18 @@ interface ListNode<T> {
 }
 
 // We can create different nodes now.
-const stringNode: ListNode<string> = {
+const stringNode: ListNode<string | number> = {
   data: 'Algorithms',
   next: null,
 };
 
 // !exercise: create a node that holds number
+const numberNode: ListNode<number | string> = {
+  data: 67,
+  next: null
+}
+
+numberNode.next = stringNode;
 
 // We can define a Linked list data structure that uses ListNode. Observe how we now
 // fix the linked list to use one type T across.
@@ -67,4 +82,63 @@ interface LinkedList<T> {
   searchFor(t: T): T | null;
   length(): number;
 }
+
+// const linkedlist0: LinkedList<number> = {
+//   head: {
+//     data: 100,
+//     next: null,
+//   },
+//   tail: {
+//     data: 50,
+//     next: null
+//   }
+// }
+
+// const linkedlist1: LinkedList<number> = {
+//   head: {
+//     data: 100,
+//     next: null,
+//   },
+//   tail: {
+//     data: 50,
+//     next: null
+//   }
+// }
+
+// const linkedlist2: LinkedList<number> = {
+//   head: {
+//     data: 100,
+//     next: null,
+//   },
+//   tail: {
+//     data: 50,
+//     next: null
+//   }
+// }
+
+
+interface TestNode<T> {
+  head: <TestNode>
+}
+
+interface LinkedListTest<T> {
+  element: TestNode<T> | null;
+}
 // We shall implement this interface, once we explore classes.
+
+// ! Exercise,  can you realize a stack DS, in terms of this linked list
+interface Stack<T> {
+  data: T
+  readonly link: LinkedList<T>;
+  push(t: T): T;
+  pop(): T | null;
+  peek(): T | null;
+  isEmpty(): boolean | null;
+  size(): number | null;
+  isFull(): boolean | null
+}
+
+// interface StackNode<T> {
+//   data: T,
+//   next: StackNode<T> | null;
+// }

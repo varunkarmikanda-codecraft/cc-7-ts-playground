@@ -1,5 +1,7 @@
 //* Sometimes, once an object is created, we might not want someone to modify certain properties of it. Such props can be marked as readonly
 
+import { title } from "node:process";
+
 interface Album {
   readonly title: string;
   readonly artist: string;
@@ -7,11 +9,31 @@ interface Album {
   genre?: string[];
 }
 
-const readOnlyWhiteAlbum: Readonly<Album> = {
+const aReadOnlyAlbum: Album = {
+  title: "Nest Gen",
+  artist: "John",
+  status: "new-release"
+}
+
+aReadOnlyAlbum.status = "on-sale"
+
+aReadOnlyAlbum.title = "new title";
+
+const readOnlyWhiteAlbum: Readonly<Album> = {   // * Turns everything in a object to readonly
   title: 'The Beatles (White Album)',
   artist: 'The Beatles',
   status: 'staff-pick',
 };
+
+readOnlyWhiteAlbum.status = "new status";
+
+// The freeze in js, the typescript one si only clompile time
+const obj = {
+  prop: 67,
+};
+
+Object.freeze(obj);
+obj.prop = 10;
 
 readOnlyWhiteAlbum.title = 'New album!'; // ! Can not modify readonly props
 // ! Note that like many of TypeScript's type helpers, the immutability enforced by readonly only operates on the first level. It won't make properties read-only recursively.
@@ -24,7 +46,7 @@ readOnlyGenres.push('classic');
 readOnlyGenres[0] = 'classic';
 
 // * ReadonlyArray helper of TypeScript.
-const readOnlyGenres1: ReadonlyArray<string> = [
+const readOnlyGenres1: ReadonlyArray<string> = [    // readonly string[]
   'rock',
   'pop',
   'unclassifiable',
@@ -55,7 +77,7 @@ type Country = {
 type ReadonlyCountry = Readonly<Country>; //only top level keys are made readonly
 
 //! Exercise: Ensure push, and assingment results in error.
-function printNames(names: string[]) {
+function printNames(names: readonly string[]) {
   for (const name of names) {
     console.log(name);
   }
@@ -119,12 +141,12 @@ type ButtonAttributes = {
 
 const modifyButtons = (attributes: ButtonAttributes[]) => {};
 
-const buttonsToChange = [
+const buttonsToChange: ButtonAttributes[] = [
   {
-    type: 'button',
+    type: 'button' as const
   },
   {
-    type: 'submit',
+    type: 'submit' as const
   },
 ];
 
