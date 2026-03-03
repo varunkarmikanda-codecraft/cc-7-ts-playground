@@ -14,13 +14,26 @@ function addThreeNumbers(a: number): (b: number) => (c: number) => number {
 	};
 }
 
-const add5 = addThreeNumbers(5);
+// Currying is the process where you rewrite the given function as a sequence of functions expressed as high order, where each function would take the next arg, and so on and the final one will hav ethe actual implementation where all args will be potentially used for computation
+
+const addThreeNums = (a: number) => (b: number) => (c: number): number =>  a + b + c;
+
+const add5 = addThreeNumbers(5);		// Point free notation
 const add10 = addThreeNumbers(10);
 const add5and10 = add5(10);
 const resultFromAdders = add5and10(20);
 assert.strictEqual(resultFromAdders, 35);
 assert.strictEqual(addThreeNumbers(1)(2)(3), 6);
 assert.strictEqual(add10(5)(2), 17);
+
+const multiply = (a: number) => (b: number) => (c: number): number => a * b * c;
+
+const mul10 = multiply(10);
+const multiply10And5 = mul10(5);
+const multiplyFinal = multiply10And5(20);
+const multiplyFinalShortHand = multiply(10)(5)(20);
+console.log(multiplyFinal)
+console.log(multiplyFinalShortHand)
 
 function log(
 	module: string,
@@ -50,6 +63,18 @@ const curriedLog = function (
 		};
 	};
 };
+
+const logArrow = (module: string, level: "WARN" | "DEBUG" | "INFO", message: string, priority: number) => {
+	console.log(`${module}: ${level}: ${message} -> PRIORITY = ${priority}`);
+}
+
+const curriedLogArrow = (module: string) => (level: "WARN" | "DEBUG" | "INFO") => (message: string) => (priority: number) => logArrow(module, level, message, priority)
+
+const logDriverInfo = curriedLogArrow("DRIVER")("INFO")
+const logDriverInfoMsg = logDriverInfo("This is an info");
+const finalLogWithPriority = logDriverInfoMsg(1)
+console.log(finalLogWithPriority)
+
 
 const logServiceWarn1 = curriedLog("service")("WARN");
 logServiceWarn1("Memory might overrun soon!");

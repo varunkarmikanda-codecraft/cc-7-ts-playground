@@ -7,9 +7,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Assert practice",
+      "name": "Debug Current File",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/4.asserts-debugging/assert-practice.ts",
+      "program": "${file}",
       "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]

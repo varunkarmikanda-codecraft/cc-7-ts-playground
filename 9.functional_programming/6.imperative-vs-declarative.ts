@@ -31,6 +31,28 @@ const words = ["apple", "banana", "cherry"];
 const capitalizedWordsImperative = capitalizeStringsImperative(words);
 console.log("Capitalized words (Imperative):", capitalizedWordsImperative);
 
+// Declare a result array 
+// Loop through input array
+// transform each input into some pother output, and add the transformed value to result
+// return result
+
+
+const ourMap = <T, U>(items: T[], transform: (num: T) => U): U[] => {
+	const result: U[] = [];
+	for (let i = 0; i < items.length; i++) {
+		const num = items[i];
+		if (num !== undefined) {
+			result.push(transform(num));
+		}
+	}
+	return result;
+}
+
+const squares = ourMap([1, 2, 3, 4, 5], num => num * num);	// Declarative style(Basically no implementation details)
+
+const caps = ourMap(["apple", "banana", "cherry"], (word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+
+
 // Declarative map implementation and usage
 function map<T, U>(array: T[], transform: (item: T) => U): U[] {
 	const result: U[] = [];
@@ -101,6 +123,10 @@ assert.deepStrictEqual(evens, [2, 4, 6, 8, 10]);
 evens = numbersToFilter.filter((num) => num % 2 === 0);
 assert.deepStrictEqual(evens, [2, 4, 6, 8, 10]);
 
+// Filter all the numbers that are divisible by 3
+const divisibleBy3 = filter([3, 9, 17, 21, 33, 99, 67], num => num % 3 === 0)
+console.log(divisibleBy3)
+
 // Accumulating values (reduce/fold)
 function imperativeSum(array: number[]): number {
 	const initial = 0;
@@ -110,6 +136,39 @@ function imperativeSum(array: number[]): number {
 	}
 	return accumulated;
 }
+
+// Function that returns an object, where each key is a value is the length of the word in given array of words
+const arrayOfWords = ["one", "two", "three", "four", "five"];
+/* 
+{ 
+	"one": 3,
+	"two": 3,
+	"three": 5,
+	"four": 4,
+	"five": 4,
+}
+*/
+
+const freqTable = (words: string[], initialValue: {}): Record<string, number> => {
+	let accumulated = initialValue;
+	for(let i=0;i<words.length;i++){
+		const word = words[i];
+		if(word && word !== undefined){
+			accumulated[word] = word.length
+		}
+	}
+	return accumulated;
+}
+
+const freqTableX = reduce(["one", "two", "three", "four"], (accumulated: Record<string, number>, current: string) => {
+	accumulated[current] = current.length;
+	return accumulated
+}, {})
+
+console.log(freqTableX)
+
+const ft = freqTable(arrayOfWords, {})
+console.log(ft)
 
 const sum = imperativeSum([1, 2, 3, 4]);
 assert.strictEqual(sum, 10);
