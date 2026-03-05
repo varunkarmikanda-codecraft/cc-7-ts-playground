@@ -111,7 +111,7 @@ function filter<T>(array: T[], predicate: (item: T) => boolean): T[] {
 	const result: T[] = [];
 	for (let index = 0; index < array.length; index++) {
 		if (predicate(array[index])) {
-			result.push(array[index]);
+			result.push(array[index]);	
 		}
 	}
 	return result;
