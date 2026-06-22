@@ -20,3 +20,5 @@ function goTo(direction: Direction) {
     case 'West':
   }
 }
+
+// Some times depending on the
